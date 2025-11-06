@@ -4,25 +4,34 @@ import { giphyApi } from '../api/giphy.api';
 
 
 export const getGifsByQuery = async (query: string): Promise<Gif[]> => {
-    const response = await giphyApi<GiphyResponse>('/search', {
-        params: {
-            q: query,
-            limit: 10,
-            // lang: 'es',
-            // api_key: import.meta.env.VITE_GIPHY_API_KEY
-        }
+    if (query.trim().length === 0) {
+        return [];
     }
-    );
 
-    // console.log(response.data);
+    try {
+        const response = await giphyApi<GiphyResponse>('/search', {
+            params: {
+                q: query,
+                limit: 10,
+                // lang: 'es',
+                // api_key: import.meta.env.VITE_GIPHY_API_KEY
+            }
+        }
+        );
 
-    //transformamos la data en el gif
-    return response.data.data.map((gif) => ({
-        id: gif.id,
-        title: gif.title,
-        url: gif.images.original.url,
-        width: Number(gif.images.original.width),
-        height: Number(gif.images.original.height)
-    }))
+        // console.log(response.data);
+
+        //transformamos la data en el gif
+        return response.data.data.map((gif) => ({
+            id: gif.id,
+            title: gif.title,
+            url: gif.images.original.url,
+            width: Number(gif.images.original.width),
+            height: Number(gif.images.original.height)
+        }));
+    } catch (error) {
+        console.log(error);
+        return [];
+    }
 
 }
