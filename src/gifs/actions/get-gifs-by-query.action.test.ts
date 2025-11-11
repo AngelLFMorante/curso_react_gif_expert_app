@@ -1,4 +1,4 @@
-import { beforeAll, beforeEach, describe, expect, test } from "vitest";
+import { beforeEach, describe, expect, test, vi } from "vitest";
 import { getGifsByQuery } from "./get-gifs-by-query.action";
 
 import AxiosMockAdapter from 'axios-mock-adapter';
@@ -77,6 +77,12 @@ describe('getGifsByQuery', () => {
     });
 
     test('should handle error when the API returns an error', async () => {
+        //COmo saber si es un spy : cuando algo tiene que ser llamado de alguna manera, mock: es una function ficticia 
+        const consoleErrorSpy = vi
+            .spyOn(console, 'error')
+            .mockImplementation(() => {
+                //aqui podemos hacer cosas
+            });
 
         mock.onGet('/search').reply(400, {
             data: {
@@ -89,6 +95,9 @@ describe('getGifsByQuery', () => {
         console.log(gifs);
 
         expect(gifs.length).toBe(0);
+        expect(consoleErrorSpy).toHaveBeenCalled();
+        expect(consoleErrorSpy).toHaveBeenCalledTimes(1);
+        expect(consoleErrorSpy).toHaveBeenCalledWith(expect.anything());
 
     });
 

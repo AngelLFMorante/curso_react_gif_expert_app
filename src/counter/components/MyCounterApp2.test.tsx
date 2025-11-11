@@ -3,7 +3,7 @@ import { describe, expect, test, vi } from "vitest";
 import { MyCounterApp } from "./MyCounterApp";
 
 //vamos a mockear el useCounter
-import { useCounter } from "../hooks/useCounter";
+// import { useCounter } from "../hooks/useCounter";
 
 //hacemos la llamada al handle, porque desde el mock es una referencia y no se pude
 const handleAddMock = vi.fn();

@@ -29,6 +29,7 @@ export const useGifs = () => {
 
         const gifs = await getGifsByQuery(term);
         setGifs(gifs);
+        gifsCache.current[term] = gifs;
     }
 
     const handleSearch = async (query: string = '') => {
@@ -38,7 +39,7 @@ export const useGifs = () => {
 
         if (previousTerms.includes(query)) return; //evitar busquedas duplicadas
 
-        setPreviousTerms([query, ...previousTerms].slice(0, 7)); // agregar termino al inicio, limitar a 8 elementos
+        setPreviousTerms([query, ...previousTerms].slice(0, 8)); // agregar termino al inicio, limitar a 8 elementos
 
         const gifs = await getGifsByQuery(query);
 
@@ -50,9 +51,9 @@ export const useGifs = () => {
     return {
         //properties
         gifs,
+        previousTerms,
 
         //methods
-        previousTerms,
         handlTermClicked,
         handleSearch
     }

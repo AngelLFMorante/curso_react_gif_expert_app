@@ -30,7 +30,7 @@ export const getGifsByQuery = async (query: string): Promise<Gif[]> => {
             height: Number(gif.images.original.height)
         }));
     } catch (error) {
-        console.log(error);
+        console.error(error);
         return [];
     }
 
